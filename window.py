@@ -173,6 +173,7 @@ class Window():
             player.player_panel.update_status()
 
         cp.player_panel.update_captured()
+        cp.last_captured = None
         testA(self, '## mouseDown')
 
     def remove(self, canvas, id):
