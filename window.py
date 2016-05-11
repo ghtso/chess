@@ -77,37 +77,6 @@ class Window():
         # run tkinter main loop
         self.root.mainloop()
 
-    def show_squares(self, board):
-        for square in board.squares:
-            col = square.col
-            row = square.row
-            name = square.name
-            color = square.color
-            left = OFFSET + col * SQUARE_DIM
-            right = left + SQUARE_DIM
-            top = (OFFSET) + (8 * SQUARE_DIM) - (row * SQUARE_DIM)
-            bottom =  (top - SQUARE_DIM)
-            box_coord = (left, top, right, bottom)
-            canvassquare = CanvasSquare(self.canvasMain, box_coord, name, color)
-            self.rectangles.append(canvassquare)
-            self.id_csquare_dict[canvassquare.id] = canvassquare
-            square.canvas_center = ((left+right)/2, (top+bottom)/2)
-
-    def show_pieces(self, canvas, piece_list, player):
-        for piece in piece_list:
-            color = piece.color
-            name = NAME_CONVERSION_DICT[piece.name_short]
-            file_path = PATH_IMAGE_MEDIUM + '/' + color + '/' + name + '.gif'
-            photo = PhotoImage(file=file_path)
-            square = self.board.get_square(piece.field)
-            col, row = square.col, square.row
-            x = OFFSET + col * SQUARE_DIM + (SQUARE_DIM/2)
-            y = OFFSET + (len(HORIZONTAL)-row) * SQUARE_DIM - (SQUARE_DIM/2)
-            id = canvas.create_image(x, y,image=photo, tags='piece')
-            self.id_pieces_dict[id] = (piece, player)
-            piece.canvas_id = id
-            piece.photo = photo
-
     def button_start_game(self):
         self.game.start_game()
 
@@ -121,13 +90,6 @@ class Window():
     def button_end_game(self):
         self.game.end_game()
         self.hide_touch_and_utils(self.canvasMain)
-
-    def set_square_selected(self, selected):
-        if self.square_selected:
-            return False
-        else:
-            self.square_selected = selected
-            return True
 
     def get_square(self, id):
         '''
@@ -167,41 +129,6 @@ class Window():
 
         self.is_movable_fields_show = False
         self.id_utils_dict = {}
-
-    def remove(self, canvas, id):
-        canvas.delete(id)
-
-    def show_touch(self, canvas, field):
-        #test
-        print('# test')
-        print('number of board squares with tag boardsquare:',len(canvas.find_withtag('boardsquare')))
-        print('show yellow rectangle...')
-        #
-        square = self.board.get_square(field)
-        cx, cy = square.canvas_center
-        dim = SQUARE_DIM /2 - 3
-        top = cy + dim
-        bottom = cy - dim
-        left = cx - dim
-        right = cx + dim
-        canvas.create_rectangle(left, top, right, bottom, fill='', outline='yellow', width=3, tags='touch')
-
-        # test
-        print('number of board squares with tag boardsquare:',len(canvas.find_withtag('boardsquare')))
-        #
-
-    def update(self, canvas, fields):
-        '''
-        Updates two fields on canvas board.
-        :param fields: list of two fields (as string) changed after 'move' a piece; field_source and field_destination
-        :return:
-        '''
-        for field in fields:
-            square = self.board.get_square(field)
-            if square.piece:
-                id = square.piece.canvas_id
-                new_canvasx, new_canvasy = square.canvas_center
-                canvas.coords(id, new_canvasx, new_canvasy)
 
     def mouseDown(self, event):
         canvasx = self.canvasMain.canvasx(event.x)
@@ -244,6 +171,35 @@ class Window():
 
         cp.player_panel.update_captured()
 
+    def remove(self, canvas, id):
+        canvas.delete(id)
+
+    def set_square_selected(self, selected):
+        if self.square_selected:
+            return False
+        else:
+            self.square_selected = selected
+            return True
+
+    def show_touch(self, canvas, field):
+        #test
+        print('# test')
+        print('number of board squares with tag boardsquare:',len(canvas.find_withtag('boardsquare')))
+        print('show yellow rectangle...')
+        #
+        square = self.board.get_square(field)
+        cx, cy = square.canvas_center
+        dim = SQUARE_DIM /2 - 3
+        top = cy + dim
+        bottom = cy - dim
+        left = cx - dim
+        right = cx + dim
+        canvas.create_rectangle(left, top, right, bottom, fill='', outline='yellow', width=3, tags='touch')
+
+        # test
+        print('number of board squares with tag boardsquare:',len(canvas.find_withtag('boardsquare')))
+        #
+
     def show_movable_fields(self,canvas, piece):
         if self.is_movable_fields_show:
             return False
@@ -255,6 +211,50 @@ class Window():
                     id = canvas.create_image(x, y,image=self.photo_cross_red, tags='cross')
                     self.id_utils_dict[id] = (square, None)
                     pass
+
+    def show_pieces(self, canvas, piece_list, player):
+        for piece in piece_list:
+            color = piece.color
+            name = NAME_CONVERSION_DICT[piece.name_short]
+            file_path = PATH_IMAGE_MEDIUM + '/' + color + '/' + name + '.gif'
+            photo = PhotoImage(file=file_path)
+            square = self.board.get_square(piece.field)
+            col, row = square.col, square.row
+            x = OFFSET + col * SQUARE_DIM + (SQUARE_DIM/2)
+            y = OFFSET + (len(HORIZONTAL)-row) * SQUARE_DIM - (SQUARE_DIM/2)
+            id = canvas.create_image(x, y,image=photo, tags='piece')
+            self.id_pieces_dict[id] = (piece, player)
+            piece.canvas_id = id
+            piece.photo = photo
+
+    def show_squares(self, board):
+        for square in board.squares:
+            col = square.col
+            row = square.row
+            name = square.name
+            color = square.color
+            left = OFFSET + col * SQUARE_DIM
+            right = left + SQUARE_DIM
+            top = (OFFSET) + (8 * SQUARE_DIM) - (row * SQUARE_DIM)
+            bottom =  (top - SQUARE_DIM)
+            box_coord = (left, top, right, bottom)
+            canvassquare = CanvasSquare(self.canvasMain, box_coord, name, color)
+            self.rectangles.append(canvassquare)
+            self.id_csquare_dict[canvassquare.id] = canvassquare
+            square.canvas_center = ((left+right)/2, (top+bottom)/2)
+
+    def update(self, canvas, fields):
+        '''
+        Updates two fields on canvas board.
+        :param fields: list of two fields (as string) changed after 'move' a piece; field_source and field_destination
+        :return:
+        '''
+        for field in fields:
+            square = self.board.get_square(field)
+            if square.piece:
+                id = square.piece.canvas_id
+                new_canvasx, new_canvasy = square.canvas_center
+                canvas.coords(id, new_canvasx, new_canvasy)
 
 
 class CanvasSquare():
