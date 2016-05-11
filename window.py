@@ -2,7 +2,6 @@ from tkinter import *
 from board import *
 from events import *
 from hand import *
-from test import *
 
 SQUARE_DIM = 50
 OFFSET = SQUARE_DIM
@@ -115,7 +114,6 @@ class Window():
             return square
 
     def hide_touch_and_utils(self, canvas):
-        testA(self, ' # hide_touch_and_utils')
         # # test
         # print('================= test ==================')
         # print('len touch:',len(canvas.find_withtag('touch')), ' len cross:', len(canvas.find_withtag('cross')))
@@ -130,10 +128,8 @@ class Window():
 
         self.is_movable_fields_show = False
         self.id_utils_dict = {}
-        testA(self, '## hide_touch_and_utils')
 
     def mouseDown(self, event):
-        testA(self, ' # mouseDown')
         canvasx = self.canvasMain.canvasx(event.x)
         canvasy = self.canvasMain.canvasx(event.y)
         id = self.canvasMain.find_closest(canvasx, canvasy)
@@ -174,13 +170,9 @@ class Window():
 
         cp.player_panel.update_captured()
         cp.last_captured = None
-        testA(self, '## mouseDown')
 
     def remove(self, canvas, id):
-        testA(self, ' # remove')
-        print('delete id:', id)
         canvas.delete(id)
-        testA(self, '## remove')
 
     def set_square_selected(self, selected):
         if self.square_selected:
