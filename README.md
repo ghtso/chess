@@ -14,6 +14,3 @@ TODO:
   then the opponent's pawn can capture it en passant (in passing), and move to the square the pawn passed over. 
   This can only be done on the very next move
 - add game over scenario attached to 'End Game' button
-
-issue:
-- selfdeleting board square when touching new piece after few captures (first after 3 captures)
