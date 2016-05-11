@@ -2,6 +2,7 @@ from tkinter import *
 from board import *
 from events import *
 from hand import *
+from test import *
 
 SQUARE_DIM = 50
 OFFSET = SQUARE_DIM
@@ -114,7 +115,7 @@ class Window():
             return square
 
     def hide_touch_and_utils(self, canvas):
-
+        testA(self, ' # hide_touch_and_utils')
         # # test
         # print('================= test ==================')
         # print('len touch:',len(canvas.find_withtag('touch')), ' len cross:', len(canvas.find_withtag('cross')))
@@ -129,8 +130,10 @@ class Window():
 
         self.is_movable_fields_show = False
         self.id_utils_dict = {}
+        testA(self, '## hide_touch_and_utils')
 
     def mouseDown(self, event):
+        testA(self, ' # mouseDown')
         canvasx = self.canvasMain.canvasx(event.x)
         canvasy = self.canvasMain.canvasx(event.y)
         id = self.canvasMain.find_closest(canvasx, canvasy)
@@ -170,9 +173,13 @@ class Window():
             player.player_panel.update_status()
 
         cp.player_panel.update_captured()
+        testA(self, '## mouseDown')
 
     def remove(self, canvas, id):
+        testA(self, ' # remove')
+        print('delete id:', id)
         canvas.delete(id)
+        testA(self, '## remove')
 
     def set_square_selected(self, selected):
         if self.square_selected:
@@ -182,11 +189,11 @@ class Window():
             return True
 
     def show_touch(self, canvas, field):
-        #test
-        print('# test')
-        print('number of board squares with tag boardsquare:',len(canvas.find_withtag('boardsquare')))
-        print('show yellow rectangle...')
-        #
+        # #test
+        # print('# test')
+        # print('number of board squares with tag boardsquare:',len(canvas.find_withtag('boardsquare')))
+        # print('show yellow rectangle...')
+        # #
         square = self.board.get_square(field)
         cx, cy = square.canvas_center
         dim = SQUARE_DIM /2 - 3
@@ -196,9 +203,9 @@ class Window():
         right = cx + dim
         canvas.create_rectangle(left, top, right, bottom, fill='', outline='yellow', width=3, tags='touch')
 
-        # test
-        print('number of board squares with tag boardsquare:',len(canvas.find_withtag('boardsquare')))
-        #
+        # # test
+        # print('number of board squares with tag boardsquare:',len(canvas.find_withtag('boardsquare')))
+        # #
 
     def show_movable_fields(self,canvas, piece):
         if self.is_movable_fields_show:
