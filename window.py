@@ -1,7 +1,5 @@
 from tkinter import *
 from board import *
-from events import *
-from hand import *
 
 SQUARE_DIM = 50
 OFFSET = SQUARE_DIM
